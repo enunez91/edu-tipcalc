@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnSubtract;
     @BindView(R.id.btnClear)
     Button btnClear;
+    @BindView(R.id.outputTip)
+    TextView outputTip;
 
     private final static int TIP_STEP_CHANGE = 1;
     private final static int DEFAULT_TIP_PERCENTAGE = 10;
@@ -60,18 +64,58 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btnSubmit)
-    public void handleClickSubmit(){
+    public void handleClickSubmit() {
         hideKeyboard();
+        String strInputTotal = inputTotal.getText().toString();
+        if (!strInputTotal.isEmpty()) {
+            double total = Double.parseDouble(strInputTotal);
+            int tipPercentage = getTipPercentage();
+            double tip = total * (tipPercentage / 100d);
+            String strTip = String.format(getString(R.string.global_message_tip), tip);
+            outputTip.setVisibility(View.VISIBLE);
+            outputTip.setText(strTip);
+        }
+    }
+
+    @OnClick(R.id.btnAdd)
+    public void handleClickAdd(){
+        hideKeyboard();
+        handleTipChange(TIP_STEP_CHANGE);
+    }
+
+    @OnClick(R.id.btnSubtract)
+    public void handleClickSubtract(){
+        hideKeyboard();
+        handleTipChange(-TIP_STEP_CHANGE);
+    }
+
+    private void handleTipChange(int change) {
+        int tipPercentage = getTipPercentage();
+        tipPercentage += change;
+        if(tipPercentage > 0){
+            inputPercentage.setText(String.valueOf(tipPercentage));
+        }
+    }
+
+    private int getTipPercentage() {
+        int tipPercentage = DEFAULT_TIP_PERCENTAGE;
+        String strInputTipPercentage = inputPercentage.getText().toString().trim();
+        if(!strInputTipPercentage.isEmpty()){
+            tipPercentage = Integer.parseInt(strInputTipPercentage);
+        }else{
+            inputPercentage.setText(String.valueOf(tipPercentage));
+        }
+        return tipPercentage;
     }
 
     private void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
-        try{
+        try {
             inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken()
-                    ,InputMethodManager.HIDE_NOT_ALWAYS);
-        }catch (NullPointerException e){
-            Log.e(getLocalClassName(),Log.getStackTraceString(e));
+                    , InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (NullPointerException e) {
+            Log.e(getLocalClassName(), Log.getStackTraceString(e));
         }
     }
 }
