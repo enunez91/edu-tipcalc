@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/inputTotal"
+        android:hint="@string/main.hint.total" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main.button.submit"
+        android:id="@+id/btnSubmit"
+        android:layout_toEndOf="@id/inputTotal" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/inputPercentage"
+        android:layout_below="@+id/inputTotal"
+        android:hint="@string/main.hint.percentage" />
+
+    <Button
+        android:layout_width="@dimen/main.button.add.width"
+        android:layout_height="wrap_content"
+        android:text="@string/main.button.add"
+        android:id="@+id/btnAdd"
+        android:layout_below="@+id/btnSubmit"
+        android:layout_toEndOf="@id/inputPercentage"/>
+
+    <Button
+        android:layout_width="@dimen/main.button.subtract.width"
+        android:layout_height="wrap_content"
+        android:text="@string/main.button.subtract"
+        android:id="@+id/btnSubtract"
+        android:layout_below="@+id/btnSubmit"
+        android:layout_toEndOf="@id/btnAdd"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main.button.clear"
+        android:id="@+id/btnClear"
+        android:layout_below="@id/inputPercentage"/>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/viewLine"
+        android:layout_below="@id/btnClear"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        />
+</RelativeLayout>
