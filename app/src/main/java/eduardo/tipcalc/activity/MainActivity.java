@@ -14,13 +14,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import eduardo.tipcalc.R;
 import eduardo.tipcalc.TipCalcApp;
-import eduardo.tipcalc.TipHistoryListFragmentListener;
 import eduardo.tipcalc.fragment.TipHistoryListFragment;
+import eduardo.tipcalc.fragment.TipHistoryListFragmentListener;
+import eduardo.tipcalc.models.TipRecord;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,12 +82,24 @@ public class MainActivity extends AppCompatActivity {
         if (!strInputTotal.isEmpty()) {
             double total = Double.parseDouble(strInputTotal);
             int tipPercentage = getTipPercentage();
-            double tip = total * (tipPercentage / 100d);
-            String strTip = String.format(getString(R.string.global_message_tip), tip);
-            fragmentListener.action(strTip);
+
+            TipRecord tipRecord = new TipRecord();
+            tipRecord.setBill(total);
+            tipRecord.setTipPercentage(tipPercentage);
+            tipRecord.setTimestamp(new Date());
+
+            String strTip = String.format(getString(R.string.global_message_tip), tipRecord.getTip());
+
+            fragmentListener.addToList(tipRecord);
+
             outputTip.setVisibility(View.VISIBLE);
             outputTip.setText(strTip);
         }
+    }
+
+    @OnClick(R.id.btnClear)
+    public void handleClickClear(){
+        fragmentListener.clearList();
     }
 
     @OnClick(R.id.btnAdd)
