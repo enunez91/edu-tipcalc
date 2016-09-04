@@ -1,6 +1,7 @@
 package eduardo.tipcalc.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import eduardo.tipcalc.R;
+import eduardo.tipcalc.activity.TipDetailActivity;
 import eduardo.tipcalc.adapters.OnItemClickListener;
 import eduardo.tipcalc.adapters.TipAdapter;
 import eduardo.tipcalc.models.TipRecord;
@@ -30,6 +31,7 @@ public class TipHistoryListFragment extends Fragment implements TipHistoryListFr
 
     public TipHistoryListFragment() {
         // Required empty public constructor
+
     }
 
     @Override
@@ -65,6 +67,10 @@ public class TipHistoryListFragment extends Fragment implements TipHistoryListFr
 
     @Override
     public void onItemClick(TipRecord tipRecord) {
-        Toast.makeText(getContext(),tipRecord.getDateFormatted(),Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(),TipDetailActivity.class);
+        intent.putExtra(TipDetailActivity.BILL_TOTAL_KEY,tipRecord.getBill());
+        intent.putExtra(TipDetailActivity.TIP_KEY,tipRecord.getTip());
+        intent.putExtra(TipDetailActivity.DATE_KEY,tipRecord.getDateFormatted());
+        startActivity(intent);
     }
 }
